@@ -689,7 +689,7 @@ void *RobotisController::timerThread(void *param)
     ros::Duration time_duration = ros::Time::now() - begin;
 
     if (time_duration.toSec() > 0.008)
-      ROS_INFO("===== process time: %f =====", time_duration.toSec());
+      ROS_INFO("[Manager] Process Time: %f", time_duration.toSec());
 
     clock_gettime(CLOCK_MONOTONIC, &curr_time);
     long delta_nsec = (next_time.tv_sec - curr_time.tv_sec) * 1000000000 + (next_time.tv_nsec - curr_time.tv_nsec);
@@ -876,8 +876,6 @@ void RobotisController::loadOffset(const std::string path)
 
 void RobotisController::process()
 {
-//  ros::Time begin = ros::Time::now();
-
   // avoid duplicated function call
   static bool is_process_running = false;
   if (is_process_running == true)
@@ -1213,11 +1211,6 @@ void RobotisController::process()
     fprintf(stderr, "(%2.6f) SensorModule Process() & save result \n", time_duration.nsec * 0.000001);
   }
 
-//  ros::Duration time_check = ros::Time::now() - begin;
-
-//  if (time_check.toSec() > 0.004)
-//  ROS_INFO("time_check: %f", time_check.toSec());
-
   if (controller_mode_ == MotionModuleMode)
   {
     // Call MotionModule Process()
@@ -1231,14 +1224,7 @@ void RobotisController::process()
         if ((*module_it)->getModuleEnable() == false)
           continue;
 
-//        ros::Time begin = ros::Time::now();
-
         (*module_it)->process(robot_->dxls_, sensor_result_);
-
-//        ros::Duration time_check = ros::Time::now() - begin;
-
-//        if (time_check.toSec() > 0.004)
-//          ROS_INFO("time_check %s: %f", (*module_it)->getModuleName().c_str(), time_check.toSec());
 
         // for loop : joint list
         for (auto& dxl_it : robot_->dxls_)
@@ -1436,11 +1422,6 @@ void RobotisController::process()
   }
 
   is_process_running = false;
-
-//    ros::Duration time_check_final = ros::Time::now() - begin;
-
-//    if (time_check.toSec() > 0.004)
-//    ROS_INFO("time_check_final: %f", time_check.toSec());
 }
 
 void RobotisController::addMotionModule(MotionModule *module)
