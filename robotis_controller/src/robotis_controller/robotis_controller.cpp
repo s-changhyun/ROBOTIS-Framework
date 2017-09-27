@@ -876,7 +876,7 @@ void RobotisController::loadOffset(const std::string path)
 
 void RobotisController::process()
 {
-  ros::Time begin = ros::Time::now();
+//  ros::Time begin = ros::Time::now();
 
   // avoid duplicated function call
   static bool is_process_running = false;
@@ -1213,10 +1213,12 @@ void RobotisController::process()
     fprintf(stderr, "(%2.6f) SensorModule Process() & save result \n", time_duration.nsec * 0.000001);
   }
 
-  ros::Duration time_check = ros::Time::now() - begin;
+//  ros::Duration time_check = ros::Time::now() - begin;
 
 //  if (time_check.toSec() > 0.004)
-  ROS_INFO("calc time: %f", time_check.toSec());
+//  ROS_INFO("time_check: %f", time_check.toSec());
+
+  ros::Time begin = ros::Time::now();
 
   if (controller_mode_ == MotionModuleMode)
   {
@@ -1429,6 +1431,11 @@ void RobotisController::process()
   }
 
   is_process_running = false;
+
+    ros::Duration time_check = ros::Time::now() - begin;
+
+//    if (time_check.toSec() > 0.004)
+    ROS_INFO("time_check: %f", time_check.toSec());
 }
 
 void RobotisController::addMotionModule(MotionModule *module)
