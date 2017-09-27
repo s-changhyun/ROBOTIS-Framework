@@ -1231,14 +1231,14 @@ void RobotisController::process()
         if ((*module_it)->getModuleEnable() == false)
           continue;
 
-        ros::Time begin = ros::Time::now();
+//        ros::Time begin = ros::Time::now();
 
         (*module_it)->process(robot_->dxls_, sensor_result_);
 
-        ros::Duration time_check = ros::Time::now() - begin;
+//        ros::Duration time_check = ros::Time::now() - begin;
 
-        if (time_check.toSec() > 0.004)
-          ROS_INFO("time_check %s: %f", (*module_it)->getModuleName().c_str(), time_check.toSec());
+//        if (time_check.toSec() > 0.004)
+//          ROS_INFO("time_check %s: %f", (*module_it)->getModuleName().c_str(), time_check.toSec());
 
         // for loop : joint list
         for (auto& dxl_it : robot_->dxls_)
