@@ -682,7 +682,14 @@ void *RobotisController::timerThread(void *param)
     next_time.tv_sec += (next_time.tv_nsec + controller->robot_->getControlCycle() * 1000000) / 1000000000;
     next_time.tv_nsec = (next_time.tv_nsec + controller->robot_->getControlCycle() * 1000000) % 1000000000;
 
+    ros::Time begin = ros::Time::now();
+
     controller->process();
+
+    ros::Duration time_duration = ros::Time::now() - begin;
+
+    if (time_duration.toSec() > 0.008)
+      ROS_INFO("process time: %f", time_duration.toSec());
 
     clock_gettime(CLOCK_MONOTONIC, &curr_time);
     long delta_nsec = (next_time.tv_sec - curr_time.tv_sec) * 1000000000 + (next_time.tv_nsec - curr_time.tv_nsec);
@@ -869,6 +876,8 @@ void RobotisController::loadOffset(const std::string path)
 
 void RobotisController::process()
 {
+  ros::Time begin = ros::Time::now();
+
   // avoid duplicated function call
   static bool is_process_running = false;
   if (is_process_running == true)
@@ -1203,6 +1212,11 @@ void RobotisController::process()
     time_duration = ros::Time::now() - start_time;
     fprintf(stderr, "(%2.6f) SensorModule Process() & save result \n", time_duration.nsec * 0.000001);
   }
+
+  ros::Duration time_check = ros::Time::now() - begin;
+
+//  if (time_check.toSec() > 0.004)
+  ROS_INFO("calc time: %f", time_check.toSec());
 
   if (controller_mode_ == MotionModuleMode)
   {
