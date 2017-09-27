@@ -689,7 +689,7 @@ void *RobotisController::timerThread(void *param)
     ros::Duration time_duration = ros::Time::now() - begin;
 
     if (time_duration.toSec() > 0.008)
-      ROS_INFO("process time: %f", time_duration.toSec());
+      ROS_INFO("===== process time: %f =====", time_duration.toSec());
 
     clock_gettime(CLOCK_MONOTONIC, &curr_time);
     long delta_nsec = (next_time.tv_sec - curr_time.tv_sec) * 1000000000 + (next_time.tv_nsec - curr_time.tv_nsec);
