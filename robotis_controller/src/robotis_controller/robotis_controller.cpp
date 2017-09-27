@@ -1218,8 +1218,6 @@ void RobotisController::process()
 //  if (time_check.toSec() > 0.004)
 //  ROS_INFO("time_check: %f", time_check.toSec());
 
-  ros::Time begin = ros::Time::now();
-
   if (controller_mode_ == MotionModuleMode)
   {
     // Call MotionModule Process()
@@ -1233,7 +1231,12 @@ void RobotisController::process()
         if ((*module_it)->getModuleEnable() == false)
           continue;
 
+        ros::Time begin = ros::Time::now();
+
         (*module_it)->process(robot_->dxls_, sensor_result_);
+
+        ros::Duration time_check = ros::Time::now() - begin;
+        ROS_INFO("time_check %s: %f", (*module_it)->getModuleName().c_str(), time_check.toSec());
 
         // for loop : joint list
         for (auto& dxl_it : robot_->dxls_)
@@ -1432,10 +1435,10 @@ void RobotisController::process()
 
   is_process_running = false;
 
-    ros::Duration time_check = ros::Time::now() - begin;
+//    ros::Duration time_check_final = ros::Time::now() - begin;
 
 //    if (time_check.toSec() > 0.004)
-    ROS_INFO("time_check: %f", time_check.toSec());
+//    ROS_INFO("time_check_final: %f", time_check.toSec());
 }
 
 void RobotisController::addMotionModule(MotionModule *module)
