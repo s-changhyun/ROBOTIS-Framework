@@ -737,20 +737,20 @@ void RobotisController::startTimer()
     struct sched_param param;
     pthread_attr_t attr;
 
-    pthread_attr_init(&attr);
+//    pthread_attr_init(&attr);
 
-    error = pthread_attr_setschedpolicy(&attr, SCHED_RR);
-    if (error != 0)
-      ROS_ERROR("pthread_attr_setschedpolicy error = %d\n", error);
-    error = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
-    if (error != 0)
-      ROS_ERROR("pthread_attr_setinheritsched error = %d\n", error);
+//    error = pthread_attr_setschedpolicy(&attr, SCHED_RR);
+//    if (error != 0)
+//      ROS_ERROR("pthread_attr_setschedpolicy error = %d\n", error);
+//    error = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+//    if (error != 0)
+//      ROS_ERROR("pthread_attr_setinheritsched error = %d\n", error);
 
-    memset(&param, 0, sizeof(param));
-    param.sched_priority = 31;    // RT
-    error = pthread_attr_setschedparam(&attr, &param);
-    if (error != 0)
-      ROS_ERROR("pthread_attr_setschedparam error = %d\n", error);
+//    memset(&param, 0, sizeof(param));
+//    param.sched_priority = 31;    // RT
+//    error = pthread_attr_setschedparam(&attr, &param);
+//    if (error != 0)
+//      ROS_ERROR("pthread_attr_setschedparam error = %d\n", error);
 
     // create and start the thread
     if ((error = pthread_create(&this->timer_thread_, &attr, this->timerThread, this)) != 0)
