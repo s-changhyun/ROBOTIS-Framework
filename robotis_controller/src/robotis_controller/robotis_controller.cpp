@@ -987,7 +987,7 @@ void RobotisController::process()
       }
 
       // SyncWrite
-//      queue_mutex_.lock();
+      queue_mutex_.lock();
 
       if (direct_sync_write_.size() > 0)
       {
@@ -1063,7 +1063,7 @@ void RobotisController::process()
           it.second->txPacket();
       }
 
-//      queue_mutex_.unlock();
+      queue_mutex_.unlock();
 
       // BulkRead Tx
       for (auto& it : port_to_bulk_read_)
@@ -1166,7 +1166,7 @@ void RobotisController::process()
         }
       }
 
-//      queue_mutex_.lock();
+      queue_mutex_.lock();
 
 //      for (auto& it : port_to_sync_write_position_)
 //      {
@@ -1184,7 +1184,7 @@ void RobotisController::process()
         direct_sync_write_.clear();
       }
 
-//      queue_mutex_.unlock();
+      queue_mutex_.unlock();
 
       // BulkRead Tx
       for (auto& it : port_to_bulk_read_)
@@ -1217,7 +1217,7 @@ void RobotisController::process()
     // -> for loop : call MotionModule list -> Process()
     if (motion_modules_.size() > 0)
     {
-//      queue_mutex_.lock();
+      queue_mutex_.lock();
 
       for (auto module_it = motion_modules_.begin(); module_it != motion_modules_.end(); module_it++)
       {
@@ -1384,7 +1384,7 @@ void RobotisController::process()
         }
       }
 
-//      queue_mutex_.unlock();
+      queue_mutex_.unlock();
     }
 
     if (DEBUG_PRINT)
@@ -1511,7 +1511,7 @@ void RobotisController::writeControlTableCallback(const robotis_controller_msgs:
   if (item->access_type_ == Read)
     return;
 
-//  queue_mutex_.lock();
+  queue_mutex_.lock();
 
 
   direct_sync_write_.push_back(new dynamixel::GroupSyncWrite(port, packet_handler, item->address_, msg->data_length));
@@ -1525,7 +1525,7 @@ void RobotisController::writeControlTableCallback(const robotis_controller_msgs:
 	  fprintf(stderr, "%02X ", dt);
   fprintf(stderr, "\n");
 
-//  queue_mutex_.unlock();
+  queue_mutex_.unlock();
 
 }
 
@@ -1637,7 +1637,7 @@ void RobotisController::setJointStatesCallback(const sensor_msgs::JointState::Co
   if (controller_mode_ != DirectControlMode)
     return;
 
-//  queue_mutex_.lock();
+  queue_mutex_.lock();
 
   for (int i = 0; i < msg->name.size(); i++)
   {
@@ -1660,7 +1660,7 @@ void RobotisController::setJointStatesCallback(const sensor_msgs::JointState::Co
       port_to_sync_write_position_[dxl->port_name_]->addParam(dxl->id_, sync_write_data);
   }
 
-//  queue_mutex_.unlock();
+  queue_mutex_.unlock();
 }
 
 void RobotisController::setCtrlModuleCallback(const std_msgs::String::ConstPtr &msg)
@@ -1748,7 +1748,7 @@ void RobotisController::setJointCtrlModuleThread(const robotis_controller_msgs::
   }
 
   // set ctrl module
-//  queue_mutex_.lock();
+  queue_mutex_.lock();
 
   for(unsigned int idx = 0; idx < msg->joint_name.size(); idx++)
   {
@@ -1873,7 +1873,7 @@ void RobotisController::setJointCtrlModuleThread(const robotis_controller_msgs::
   // TODO: set indirect address
   // -> check module's control_mode
 
-//  queue_mutex_.unlock();
+  queue_mutex_.unlock();
 
   // log
 //  std::cout << "Enable Joint Ctrl Module : " << std::endl;
@@ -1964,7 +1964,7 @@ void RobotisController::setCtrlModuleThread(std::string ctrl_module)
 
 
   // set ctrl module
-//  queue_mutex_.lock();
+  queue_mutex_.lock();
 
   if (DEBUG_PRINT)
     ROS_INFO_STREAM("set module : " << ctrl_module);
@@ -2092,7 +2092,7 @@ void RobotisController::setCtrlModuleThread(std::string ctrl_module)
   // TODO: set indirect address
   // -> check module's control_mode
 
-//  queue_mutex_.unlock();
+  queue_mutex_.unlock();
 
   // publish current module
   robotis_controller_msgs::JointCtrlModule current_module_msg;
@@ -2108,7 +2108,7 @@ void RobotisController::setCtrlModuleThread(std::string ctrl_module)
 
 void RobotisController::gazeboJointStatesCallback(const sensor_msgs::JointState::ConstPtr &msg)
 {
-//  queue_mutex_.lock();
+  queue_mutex_.lock();
 
   for (unsigned int i = 0; i < msg->name.size(); i++)
   {
@@ -2128,7 +2128,7 @@ void RobotisController::gazeboJointStatesCallback(const sensor_msgs::JointState:
     init_pose_loaded_ = true;
   }
 
-//  queue_mutex_.unlock();
+  queue_mutex_.unlock();
 }
 
 bool RobotisController::isTimerStopped()
