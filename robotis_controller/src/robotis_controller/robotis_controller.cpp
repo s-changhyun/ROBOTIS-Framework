@@ -753,11 +753,17 @@ void RobotisController::startTimer()
 //      ROS_ERROR("pthread_attr_setschedparam error = %d\n", error);
 
     // create and start the thread
-    if ((error = pthread_create(&this->timer_thread_, &attr, this->timerThread, this)) != 0)
+//    if ((error = pthread_create(&this->timer_thread_, &attr, this->timerThread, this)) != 0)
+//    {
+//      ROS_ERROR("Creating timer thread failed!!");
+//      exit(-1);
+//    }
+    if ((error = pthread_create(&this->timer_thread_, NULL, this->timerThread, this)) != 0)
     {
       ROS_ERROR("Creating timer thread failed!!");
       exit(-1);
     }
+
   }
 
   this->is_timer_running_ = true;
